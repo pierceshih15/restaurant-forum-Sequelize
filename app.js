@@ -1,8 +1,8 @@
 const express = require('express')
+const handlebars = require('express-handlebars') // 引入 handlebars
+const db = require('./models');
 const app = express()
 const port = 3000
-
-const handlebars = require('express-handlebars') // 引入 handlebars
 
 app.engine('handlebars', handlebars({
   defaultLayout: 'main'
@@ -11,6 +11,7 @@ app.set('view engine', 'handlebars') // 設定使用 Handlebars 做為樣板引�
 
 
 app.listen(port, () => {
+  db.sequelize.sync() // 跟資料庫同步
   console.log(`The restaurantForum app listening on port ${port}!`)
 })
 
