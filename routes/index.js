@@ -20,15 +20,22 @@ module.exports = (app, passport) => {
     res.redirect('/signin');
   }
 
+  // 前台頁面
   app.get('/', authenticated, (req, res) => res.redirect('/restaurants'));
   app.get('/restaurants', authenticated, restController.getRestaurants);
 
+  // 後台頁面
   app.get('/admin', authenticatedAdmin, (req, res) => res.redirect('/admin/restaurants'));
   app.get('/admin/restaurants', authenticatedAdmin, adminController.getRestaurants);
+  // 新增餐廳
+  app.get('/admin/restaurants/create', authenticatedAdmin, adminController.createRestaurant);
+  app.post('/admin/restaurants', authenticatedAdmin, adminController.postRestaurant);
 
+  // 使用者註冊
   app.get('/signup', userController.signUpPage);
   app.post('/signup', userController.signUp);
 
+  // 使用者登入
   app.get('/signin', userController.signInPage);
   app.post('/signin',
     passport.authenticate('local', {
@@ -36,5 +43,7 @@ module.exports = (app, passport) => {
       failureFlash: true
     }), userController.signIn
   );
+
+  // 使用者登出
   app.get('/logout', userController.logout);
 };
