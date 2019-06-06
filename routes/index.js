@@ -27,9 +27,13 @@ module.exports = (app, passport) => {
   // 後台頁面
   app.get('/admin', authenticatedAdmin, (req, res) => res.redirect('/admin/restaurants'));
   app.get('/admin/restaurants', authenticatedAdmin, adminController.getRestaurants);
+
   // 新增餐廳
   app.get('/admin/restaurants/create', authenticatedAdmin, adminController.createRestaurant);
   app.post('/admin/restaurants', authenticatedAdmin, adminController.postRestaurant);
+
+  // 瀏覽單一間餐廳
+  app.get('/admin/restaurants/:id', authenticatedAdmin, adminController.getRestaurant);
 
   // 使用者註冊
   app.get('/signup', userController.signUpPage);
