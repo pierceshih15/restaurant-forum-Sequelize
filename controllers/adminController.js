@@ -1,5 +1,7 @@
+const fs = require('fs')
 const db = require('../models');
 const Restaurant = db.Restaurant;
+
 
 // 宣告 adminController 物件變數，管理不同物件屬性（函式）
 const adminController = {
@@ -18,20 +20,43 @@ const adminController = {
   // 建立新餐廳的動作
   postRestaurant: (req, res) => {
     if (!req.body.name) {
-      req.flash('error_messages', '餐廳名稱尚未填寫！');
-      res.redirect('back');
+      req.flash('error_messages', "餐廳名稱尚未填寫")
+      return res.redirect('back')
     }
-    return Restaurant.create({
+
+    const {
+      file
+    } = req
+    if (file) {
+      fs.readFile(file.path, (err, data) => {
+        if (err) console.log('Error: ', err)
+        fs.writeFile(`upload/${file.originalname}`, data, () => {
+          return Restaurant.create({
+            name: req.body.name,
+            tel: req.body.tel,
+            address: req.body.address,
+            opening_hours: req.body.opening_hours,
+            description: req.body.description,
+            image: file ? `/upload/${file.originalname}` : null
+          }).then((restaurant) => {
+            req.flash('success_messages', '餐廳已新增完成')
+            return res.redirect('/admin/restaurants')
+          })
+        })
+      })
+    } else {
+      return restaurant.create({
         name: req.body.name,
         tel: req.body.tel,
         address: req.body.address,
         opening_hours: req.body.opening_hours,
-        description: req.body.description
-      })
-      .then(restaurant => {
-        req.flash('success_messages', '餐廳已新增完成！')
+        description: req.body.description,
+        image: null
+      }).then((restaurant) => {
+        req.flash('success_messages', '餐廳已新增完成')
         res.redirect('/admin/restaurants')
       })
+    }
   },
   // 取得單一餐廳的資料
   getRestaurant: (req, res) => {
@@ -52,23 +77,49 @@ const adminController = {
   // 編輯單一餐廳的資料
   putRestaurant: (req, res) => {
     if (!req.body.name) {
-      req.flash('error_messages', '餐廳名稱尚未填寫！');
-      res.redirect('back');
+      req.flash('error_messages', "餐廳名稱尚未填寫")
+      return res.redirect('back')
     }
-    return Restaurant.findByPk(req.params.id)
-      .then(restaurant => {
-        restaurant.update({
+
+    const {
+      file
+    } = req
+    if (file) {
+      fs.readFile(file.path, (err, data) => {
+        if (err) console.log('Error: ', err)
+        fs.writeFile(`upload/${file.originalname}`, data, () => {
+          return Restaurant.findByPk(req.params.id)
+            .then((restaurant) => {
+              restaurant.update({
+                name: req.body.name,
+                tel: req.body.tel,
+                address: req.body.address,
+                opening_hours: req.body.opening_hours,
+                description: req.body.description,
+                image: file ? `/upload/${file.originalname}` : restaurant.image
+              }).then((restaurant) => {
+                req.flash('success_messages', '餐廳資料已更新完成')
+                res.redirect('/admin/restaurants')
+              })
+            })
+        })
+      })
+    } else {
+      return Restaurant.findByPk(req.params.id)
+        .then((restaurant) => {
+          restaurant.update({
             name: req.body.name,
             tel: req.body.tel,
             address: req.body.address,
             opening_hours: req.body.opening_hours,
-            description: req.body.description
-          })
-          .then(restaurant => {
-            req.flash('success_messages', '餐廳已新增完成！')
+            description: req.body.description,
+            image: restaurant.image
+          }).then((restaurant) => {
+            req.flash('success_messages', '餐廳資料已更新完成')
             res.redirect('/admin/restaurants')
           })
-      })
+        })
+    }
   },
   // 刪除單一餐廳的資料
   deleteRestaurant: (req, res) => {

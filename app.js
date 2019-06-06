@@ -18,6 +18,7 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(methodOverride('_method'));
+app.use('/upload', express.static(__dirname + '/upload'));
 
 app.use(session({
   secret: 'secret',

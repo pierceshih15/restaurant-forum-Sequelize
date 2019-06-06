@@ -89,5 +89,6 @@ typings/
 # feedBack
 feedBack
 
-# secret data
-.env
+temp/
+upload/
+

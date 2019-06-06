@@ -2,6 +2,11 @@ const restController = require('../controllers/restController');
 const adminController = require('../controllers/adminController');
 const userController = require('../controllers/userController');
 
+const multer = require('multer')
+const upload = multer({
+  dest: 'temp/'
+})
+
 module.exports = (app, passport) => {
   const authenticated = (req, res, next) => {
     if (req.isAuthenticated()) {
@@ -30,7 +35,7 @@ module.exports = (app, passport) => {
 
   // 新增餐廳
   app.get('/admin/restaurants/create', authenticatedAdmin, adminController.createRestaurant);
-  app.post('/admin/restaurants', authenticatedAdmin, adminController.postRestaurant);
+  app.post('/admin/restaurants', authenticatedAdmin, upload.single('image'), adminController.postRestaurant);
 
   // 瀏覽單一間餐廳資料
   app.get('/admin/restaurants/:id', authenticatedAdmin, adminController.getRestaurant);
@@ -38,7 +43,7 @@ module.exports = (app, passport) => {
   // 編輯單一間餐廳資料
   app.get('/admin/restaurants/:id/edit', authenticatedAdmin, adminController.editRestaurant);
   // 更新單一間餐廳資料
-  app.put('/admin/restaurants/:id', authenticatedAdmin, adminController.putRestaurant);
+  app.put('/admin/restaurants/:id', authenticatedAdmin, upload.single('image'), adminController.putRestaurant);
 
   // 刪除單一間餐廳資料
   app.delete('/admin/restaurants/:id', authenticatedAdmin, adminController.deleteRestaurant);
