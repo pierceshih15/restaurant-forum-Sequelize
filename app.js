@@ -1,12 +1,13 @@
 const express = require('express')
 const handlebars = require('express-handlebars') // 引入 handlebars
 const bodyParser = require('body-parser');
-const flash = require('connect-flash')
-const session = require('express-session')
+const flash = require('connect-flash');
+const session = require('express-session');
+const passport = require('./config/passport.js');
 const db = require('./models');
 
-const app = express()
-const port = 3000
+const app = express();
+const port = 3000;
 
 app.engine('handlebars', handlebars({
   defaultLayout: 'main'
@@ -16,13 +17,15 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
-// setup session and flash
 app.use(session({
   secret: 'secret',
   resave: false,
   saveUninitialized: false
 }))
-app.use(flash())
+
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
 
 // 把 req.flash 放到 res.locals 裡面
 app.use((req, res, next) => {
@@ -33,7 +36,7 @@ app.use((req, res, next) => {
 
 app.listen(port, () => {
   db.sequelize.sync() // 跟資料庫同步
-  console.log(`The restaurantForum app listening on port ${port}!`)
+  console.log(`The restaurantForum app listening on port ${port}!`);
 })
 
-require('./routes')(app);
+require('./routes')(app, passport);
