@@ -35,8 +35,9 @@ module.exports = (app, passport) => {
   // 瀏覽單一間餐廳資料
   app.get('/admin/restaurants/:id', authenticatedAdmin, adminController.getRestaurant);
 
-  // 班級單一間餐廳資料
+  // 編輯單一間餐廳資料
   app.get('/admin/restaurants/:id/edit', authenticatedAdmin, adminController.editRestaurant);
+  app.put('/admin/restaurants/:id', authenticatedAdmin, adminController.putRestaurant);
 
   // 使用者註冊
   app.get('/signup', userController.signUpPage);
