@@ -37,7 +37,11 @@ module.exports = (app, passport) => {
 
   // 編輯單一間餐廳資料
   app.get('/admin/restaurants/:id/edit', authenticatedAdmin, adminController.editRestaurant);
+  // 更新單一間餐廳資料
   app.put('/admin/restaurants/:id', authenticatedAdmin, adminController.putRestaurant);
+
+  // 刪除單一間餐廳資料
+  app.delete('/admin/restaurants/:id', authenticatedAdmin, adminController.deleteRestaurant);
 
   // 使用者註冊
   app.get('/signup', userController.signUpPage);

@@ -69,6 +69,16 @@ const adminController = {
             res.redirect('/admin/restaurants')
           })
       })
+  },
+  // 刪除單一餐廳的資料
+  deleteRestaurant: (req, res) => {
+    return Restaurant.findByPk(req.params.id)
+      .then(restaurant => {
+        restaurant.destroy()
+          .then(restaurant => {
+            res.redirect('/admin/restaurants')
+          })
+      })
   }
 }
 
