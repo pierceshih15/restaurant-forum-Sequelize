@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const flash = require('connect-flash');
 const session = require('express-session');
 const passport = require('./config/passport.js');
+const methodOverride = require('method-override')
 const db = require('./models');
 
 const app = express();
@@ -16,6 +17,7 @@ app.set('view engine', 'handlebars') // 設定使用 Handlebars 做為樣板引�
 app.use(bodyParser.urlencoded({
   extended: true
 }));
+app.use(methodOverride('_method'));
 
 app.use(session({
   secret: 'secret',
