@@ -38,7 +38,7 @@ app.use((req, res, next) => {
   next()
 })
 
-app.listen(port, () => {
+app.listen(process.env.PORT || port, () => {
   db.sequelize.sync() // 跟資料庫同步
   console.log(`The restaurantForum app listening on port ${port}!`);
 })
