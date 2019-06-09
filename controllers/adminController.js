@@ -33,29 +33,31 @@ const adminController = {
       imgur.setClientID(IMGUR_CLIENT_ID);
       imgur.upload(file.path, (err, img) => {
         return Restaurant.create({
+            name: req.body.name,
+            tel: req.body.tel,
+            address: req.body.address,
+            opening_hours: req.body.opening_hours,
+            description: req.body.description,
+            image: file ? img.data.link : null,
+          })
+          .then((restaurant) => {
+            req.flash('success_messages', '餐廳已新增')
+            return res.redirect('/admin/restaurants')
+          })
+      })
+    } else {
+      return Restaurant.create({
           name: req.body.name,
           tel: req.body.tel,
           address: req.body.address,
           opening_hours: req.body.opening_hours,
           description: req.body.description,
-          image: file ? img.data.link : null,
-        }).then((restaurant) => {
+          image: null
+        })
+        .then((restaurant) => {
           req.flash('success_messages', '餐廳已新增')
           return res.redirect('/admin/restaurants')
         })
-      })
-    } else {
-      return Restaurant.create({
-        name: req.body.name,
-        tel: req.body.tel,
-        address: req.body.address,
-        opening_hours: req.body.opening_hours,
-        description: req.body.description,
-        image: null
-      }).then((restaurant) => {
-        req.flash('success_messages', '餐廳已新增')
-        return res.redirect('/admin/restaurants')
-      })
     }
   },
   // 取得單一餐廳的資料
@@ -90,32 +92,34 @@ const adminController = {
         return Restaurant.findByPk(req.params.id)
           .then((restaurant) => {
             restaurant.update({
-              name: req.body.name,
-              tel: req.body.tel,
-              address: req.body.address,
-              opening_hours: req.body.opening_hours,
-              description: req.body.description,
-              image: file ? img.data.link : restaurant.image,
-            }).then((restaurant) => {
-              req.flash('success_messages', '餐廳資料已更新完成')
-              res.redirect('/admin/restaurants')
-            })
+                name: req.body.name,
+                tel: req.body.tel,
+                address: req.body.address,
+                opening_hours: req.body.opening_hours,
+                description: req.body.description,
+                image: file ? img.data.link : restaurant.image,
+              })
+              .then((restaurant) => {
+                req.flash('success_messages', '餐廳資料已更新完成')
+                res.redirect('/admin/restaurants')
+              })
           })
       })
     } else {
       return Restaurant.findByPk(req.params.id)
         .then((restaurant) => {
           restaurant.update({
-            name: req.body.name,
-            tel: req.body.tel,
-            address: req.body.address,
-            opening_hours: req.body.opening_hours,
-            description: req.body.description,
-            image: restaurant.image
-          }).then((restaurant) => {
-            req.flash('success_messages', '餐廳資料已更新完成')
-            res.redirect('/admin/restaurants')
-          })
+              name: req.body.name,
+              tel: req.body.tel,
+              address: req.body.address,
+              opening_hours: req.body.opening_hours,
+              description: req.body.description,
+              image: restaurant.image
+            })
+            .then((restaurant) => {
+              req.flash('success_messages', '餐廳資料已更新完成')
+              res.redirect('/admin/restaurants')
+            })
         })
     }
   },
