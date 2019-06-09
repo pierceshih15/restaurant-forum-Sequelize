@@ -20,7 +20,8 @@ module.exports = (app, passport) => {
       if (req.user.isAdmin) {
         return next();
       }
-      return res.redirect('signin');
+      // 若無管理員權限，則導回前台餐廳頁面，避免管理員需要將自己設為一般用戶時，頁面會跳錯
+      return res.redirect('/restaurants');
     }
     res.redirect('/signin');
   }
@@ -32,6 +33,10 @@ module.exports = (app, passport) => {
   // 後台頁面
   app.get('/admin', authenticatedAdmin, (req, res) => res.redirect('/admin/restaurants'));
   app.get('/admin/restaurants', authenticatedAdmin, adminController.getRestaurants);
+  app.get('/admin/users', authenticatedAdmin, userController.editUser);
+
+  // 管理員權限設定
+  app.put('/admin/users/:id', authenticatedAdmin, userController.putUser);
 
   // 新增餐廳
   app.get('/admin/restaurants/create', authenticatedAdmin, adminController.createRestaurant);

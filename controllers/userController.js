@@ -46,6 +46,41 @@ const userController = {
     req.logout();
     res.redirect('/signin');
   },
+  // 顯示使用者清單
+  editUser: (req, res) => {
+    User.findAll().then(users => {
+      return res.render('admin/users', {
+        users: users,
+      });
+    })
+  },
+  // 更新使用者權限
+  putUser: (req, res) => {
+    return User.findByPk(req.params.id)
+      .then(user => {
+        const {
+          isAdmin
+        } = user;
+
+        if (isAdmin) {
+          user.update({
+              isAdmin: 0
+            })
+            .then(user => {
+              req.flash('success_messages', '帳號已設定為一般用戶！');
+              return res.redirect('/admin/users');
+            })
+        } else {
+          user.update({
+              isAdmin: 1
+            })
+            .then(user => {
+              req.flash('success_messages', '帳號已設定為管理員！');
+              return res.redirect('/admin/users');
+            })
+        }
+      })
+  },
 }
 
 module.exports = userController;
