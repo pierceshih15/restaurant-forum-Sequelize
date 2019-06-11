@@ -19,7 +19,11 @@ const adminController = {
   },
   // 建立新餐廳的頁面
   createRestaurant: (req, res) => {
-    return res.render('admin/create')
+    Category.findAll().then(categories => {
+      return res.render('admin/create', {
+        categories: categories,
+      });
+    })
   },
   // 建立新餐廳的動作
   postRestaurant: (req, res) => {
@@ -76,9 +80,12 @@ const adminController = {
   // 編輯單一餐廳的資料
   editRestaurant: (req, res) => {
     return Restaurant.findByPk(req.params.id).then(restaurant => {
-      return res.render('admin/create', {
-        restaurant: restaurant,
-      });
+      Category.findAll().then(categories => {
+        return res.render('admin/create', {
+          restaurant: restaurant,
+          categories: categories,
+        });
+      })
     })
   },
   // 編輯單一餐廳的資料
