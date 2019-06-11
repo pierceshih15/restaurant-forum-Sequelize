@@ -4,6 +4,7 @@ const category = db.Category;
 
 // 宣告 restController 物件變數，管理不同物件屬性（函式）
 const restController = {
+  // 瀏覽所有餐廳的頁面
   getRestaurants: (req, res) => {
     Restaurant.findAll({
         include: [category]
@@ -20,7 +21,18 @@ const restController = {
           restaurants: data
         });
       })
-  }
+  },
+  // 瀏覽單一餐廳的頁面
+  getRestaurant: (req, res) => {
+    Restaurant.findByPk(req.params.id, {
+        include: [category]
+      })
+      .then(restaurant => {
+        return res.render('restaurant', {
+          restaurant: restaurant
+        });
+      })
+  },
 }
 
 module.exports = restController;

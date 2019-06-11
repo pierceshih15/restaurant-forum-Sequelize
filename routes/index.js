@@ -30,6 +30,8 @@ module.exports = (app, passport) => {
   // 前台頁面
   app.get('/', authenticated, (req, res) => res.redirect('/restaurants'));
   app.get('/restaurants', authenticated, restController.getRestaurants);
+  // 瀏覽單一間餐廳資料
+  app.get('/restaurants/:id', authenticated, restController.getRestaurant);
 
   // 後台頁面
   app.get('/admin', authenticatedAdmin, (req, res) => res.redirect('/admin/restaurants'));
