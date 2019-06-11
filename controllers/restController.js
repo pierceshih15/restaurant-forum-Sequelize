@@ -68,7 +68,7 @@ const restController = {
   // 瀏覽單一餐廳的頁面
   getRestaurant: (req, res) => {
     Restaurant.findByPk(req.params.id, {
-        include: [category]
+        include: [Category]
       })
       .then(restaurant => {
         return res.render('restaurant', {

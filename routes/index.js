@@ -2,6 +2,7 @@ const restController = require('../controllers/restController');
 const adminController = require('../controllers/adminController');
 const userController = require('../controllers/userController');
 const categoryController = require('../controllers/categoryController');
+const commentController = require('../controllers/commentController');
 
 const multer = require('multer')
 const upload = multer({
@@ -33,11 +34,13 @@ module.exports = (app, passport) => {
   // 瀏覽單一間餐廳資料
   app.get('/restaurants/:id', authenticated, restController.getRestaurant);
 
+  // 使用者新增餐廳評論
+  app.post('/comments', authenticated, commentController.postComment);
+
   // 後台頁面
   app.get('/admin', authenticatedAdmin, (req, res) => res.redirect('/admin/restaurants'));
   app.get('/admin/restaurants', authenticatedAdmin, adminController.getRestaurants);
   app.get('/admin/users', authenticatedAdmin, userController.editUser);
-
 
   // 管理員權限設定
   app.put('/admin/users/:id', authenticatedAdmin, userController.putUser);
