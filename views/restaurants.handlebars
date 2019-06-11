@@ -1,3 +1,15 @@
+<ul class="nav nav-pills">
+  <li class="nav-item">
+    <a href="?categoryId" class="nav-link">全部</a>
+  </li>
+  {{#each categories}}
+  <li class="nav-item">
+    <a href="?categoryId={{this.id}}" class="nav-link">{{this.name}}</a>
+  </li>
+  {{/each}}
+</ul>
+<br />
+
 <div class="row">
   {{#each restaurants}}
   <div class="col-md-4">
