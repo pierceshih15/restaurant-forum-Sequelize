@@ -15,7 +15,8 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 app.engine('handlebars', handlebars({
-  defaultLayout: 'main'
+  defaultLayout: 'main',
+  helpers: require('./config/handlebars-helpers')
 })) // Handlebars 註冊樣板引擎
 app.set('view engine', 'handlebars') // 設定使用 Handlebars 做為樣板引擎
 app.use(bodyParser.urlencoded({
