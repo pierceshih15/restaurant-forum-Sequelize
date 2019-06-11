@@ -36,6 +36,8 @@ module.exports = (app, passport) => {
 
   // 使用者新增餐廳評論
   app.post('/comments', authenticated, commentController.postComment);
+  // 管理員刪除餐廳評論
+  app.delete('/comments/:id', authenticatedAdmin, commentController.deleteComment);
 
   // 後台頁面
   app.get('/admin', authenticatedAdmin, (req, res) => res.redirect('/admin/restaurants'));
