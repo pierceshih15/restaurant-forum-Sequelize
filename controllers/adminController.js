@@ -1,7 +1,7 @@
 const fs = require('fs')
 const db = require('../models');
 const Restaurant = db.Restaurant;
-
+const Category = db.Category;
 const imgur = require('imgur-node-api');
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID;
 
@@ -9,7 +9,9 @@ const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID;
 const adminController = {
   // 取得所有餐廳的資料
   getRestaurants: (req, res) => {
-    return Restaurant.findAll().then(restaurants => {
+    return Restaurant.findAll({
+      include: [Category]
+    }).then(restaurants => {
       return res.render('admin/restaurants', {
         restaurants: restaurants,
       });
