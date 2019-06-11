@@ -45,6 +45,7 @@ const adminController = {
             opening_hours: req.body.opening_hours,
             description: req.body.description,
             image: file ? img.data.link : null,
+            Category: req.body.categoryId
           })
           .then((restaurant) => {
             req.flash('success_messages', '餐廳已新增')
@@ -58,7 +59,8 @@ const adminController = {
           address: req.body.address,
           opening_hours: req.body.opening_hours,
           description: req.body.description,
-          image: null
+          image: null,
+          Category: req.body.categoryId
         })
         .then((restaurant) => {
           req.flash('success_messages', '餐廳已新增')
@@ -110,6 +112,7 @@ const adminController = {
                 opening_hours: req.body.opening_hours,
                 description: req.body.description,
                 image: file ? img.data.link : restaurant.image,
+                Category: req.body.categoryId
               })
               .then((restaurant) => {
                 req.flash('success_messages', '餐廳資料已更新完成')
@@ -126,7 +129,8 @@ const adminController = {
               address: req.body.address,
               opening_hours: req.body.opening_hours,
               description: req.body.description,
-              image: restaurant.image
+              image: restaurant.image,
+              Category: req.body.categoryId
             })
             .then((restaurant) => {
               req.flash('success_messages', '餐廳資料已更新完成')
