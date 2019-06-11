@@ -37,10 +37,11 @@ module.exports = (app, passport) => {
   app.get('/admin/users', authenticatedAdmin, userController.editUser);
   app.get('/admin/categories', authenticatedAdmin, categoryController.getCategories);
 
-
-
   // 管理員權限設定
   app.put('/admin/users/:id', authenticatedAdmin, userController.putUser);
+
+  // 新增分類
+  app.post('/admin/categories', authenticatedAdmin, categoryController.postCategory);
 
   // 新增餐廳
   app.get('/admin/restaurants/create', authenticatedAdmin, adminController.createRestaurant);
