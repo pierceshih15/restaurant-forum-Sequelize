@@ -2,28 +2,50 @@ const db = require('../models');
 const Restaurant = db.Restaurant;
 const Category = db.Category;
 
+const pageLimit = 10;
+
 // 宣告 restController 物件變數，管理不同物件屬性（函式）
 const restController = {
   // 瀏覽所有餐廳的頁面
   getRestaurants: (req, res) => {
+
+    let offset = 0;
     // 宣告 whereQuery - 這是要傳給 findAll 的參數，需要包裝成物件格式。
     let whereQuery = {};
     // 宣告 categoryId - 這是要放在 whereQuery 裡的內容，如果 request 有帶入特定的分類，就可以用 req.query.categoryId 取到分類 id，如果「全部餐廳」的情境，就會是空字串。
     let categoryId = '';
+
+    // 若有分頁內容，則計算該顯示哪個區段的資料
+    if (req.query.page) {
+      offset = (req.query.page - 1) * pageLimit;
+    }
+
     if (req.query.categoryId) {
       categoryId = Number(req.query.categoryId)
       whereQuery['categoryId'] = categoryId
     }
-
-    console.log('here', req.query.categoryId);
-
-    Restaurant.findAll({
+    // 透過 findAndCountAll 語法找出相對應的餐廳資料，以 result 呈現內容
+    Restaurant.findAndCountAll({
         include: Category,
-        where: whereQuery
+        where: whereQuery,
+        offset: offset,
+        limit: pageLimit
       })
-      .then(restaurants => {
+      .then(result => {
+        // Pagination Variables
+        // page 代表所在頁面，預設為 1
+        let page = Number(req.query.page) || 1;
+        // 計算總共有幾頁
+        let pages = Math.ceil(result.count / pageLimit);
+        let totalPage = Array.from({
+          length: pages
+        }).map((item, index) => index + 1);
+        let prev = page - 1 ? 1 : page - 1;
+        let next = page + 1 ? pages : pages + 1;
+
         // 複製一份餐廳資料，存數變數 data 使用
-        const data = restaurants.map(r => ({
+        // 從 results 取出 rows 屬性的內容
+        const data = result.rows.map(r => ({
           // 展開餐廳資料
           ...r.dataValues,
           // 複寫 description 內容
@@ -34,6 +56,11 @@ const restController = {
             restaurants: data,
             categories: categories,
             categoryId: categoryId,
+            page: page,
+            pageLimit: pageLimit,
+            totalPage: totalPage,
+            prev: prev,
+            next: next,
           });
         })
       })
