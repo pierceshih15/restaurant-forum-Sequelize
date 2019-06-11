@@ -35,13 +35,19 @@ module.exports = (app, passport) => {
   app.get('/admin', authenticatedAdmin, (req, res) => res.redirect('/admin/restaurants'));
   app.get('/admin/restaurants', authenticatedAdmin, adminController.getRestaurants);
   app.get('/admin/users', authenticatedAdmin, userController.editUser);
-  app.get('/admin/categories', authenticatedAdmin, categoryController.getCategories);
+
 
   // 管理員權限設定
   app.put('/admin/users/:id', authenticatedAdmin, userController.putUser);
 
+  // 管理分類頁面
+  app.get('/admin/categories', authenticatedAdmin, categoryController.getCategories);
   // 新增分類
   app.post('/admin/categories', authenticatedAdmin, categoryController.postCategory);
+  // 管理單一分類頁面
+  app.get('/admin/categories/:id', authenticatedAdmin, categoryController.getCategories);
+  // 編輯分類
+  app.put('/admin/categories/:id', authenticatedAdmin, categoryController.putCategory);
 
   // 新增餐廳
   app.get('/admin/restaurants/create', authenticatedAdmin, adminController.createRestaurant);
