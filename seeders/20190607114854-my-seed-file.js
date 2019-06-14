@@ -5,6 +5,7 @@ const faker = require('faker')
 module.exports = {
   up: (queryInterface, Sequelize) => {
     queryInterface.bulkInsert('Users', [{
+      id: 1,
       email: 'root@example.com',
       password: bcrypt.hashSync('12345678', bcrypt.genSaltSync(10), null),
       isAdmin: true,
@@ -12,6 +13,7 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date()
     }, {
+      id: 2,
       email: 'user1@example.com',
       password: bcrypt.hashSync('12345678', bcrypt.genSaltSync(10), null),
       isAdmin: false,
@@ -19,6 +21,7 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date()
     }, {
+      id: 3,
       email: 'user2@example.com',
       password: bcrypt.hashSync('12345678', bcrypt.genSaltSync(10), null),
       isAdmin: false,
@@ -41,8 +44,9 @@ module.exports = {
     return queryInterface.bulkInsert('Restaurants',
       Array.from({
         length: 50
-      }).map(d =>
+      }).map((d, i) =>
         ({
+          id: i + 1,
           name: faker.name.findName(),
           tel: faker.phone.phoneNumber(),
           address: faker.address.streetAddress(),
