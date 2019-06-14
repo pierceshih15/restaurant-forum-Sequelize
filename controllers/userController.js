@@ -1,6 +1,8 @@
 const bcrypt = require('bcryptjs');
 const db = require('../models');
 const User = db.User;
+const Restaurant = db.Restaurant;
+const Comment = db.Comment;
 const imgur = require('imgur-node-api');
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID;
 
@@ -85,12 +87,23 @@ const userController = {
   },
   // 瀏覽使用者個人頁面
   getUser: (req, res) => {
-    User.findByPk(req.params.id).then(user => {
-      return res.render('users/profile', {
-        // 傳入 profile 以供瀏覽器畫面更新，同時，不更動使用者的帳號
-        profile: user,
-      });
-    })
+    User.findByPk(req.params.id, {
+        include: {
+          model: Comment,
+          include: Restaurant
+        }
+      })
+      .then(user => {
+        const commentNum = user.Comments.length;
+        const commentRestaurantArray = user.Comments.map(comment => comment.Restaurant.name);
+        const commentRestaurantNum = commentRestaurantArray.filter(findUnique).length;
+        return res.render('users/profile', {
+          // 傳入 profile 以供瀏覽器畫面更新，同時，不更動使用者的帳號
+          profile: user,
+          commentNum: commentNum,
+          commentRestaurantNum: commentRestaurantNum,
+        });
+      })
   },
   // 編輯使用者個人資料頁面
   editUser: (req, res) => {
@@ -138,3 +151,7 @@ const userController = {
 }
 
 module.exports = userController;
+
+function findUnique(value, index, self) {
+  return self.indexOf(value) === index;
+}

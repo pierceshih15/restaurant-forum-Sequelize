@@ -24,4 +24,34 @@
       </div>
     </div>
   </div>
-</div>
+
+  {{!-- 評論區 --}}
+  <div class="card my-5">
+    <div class="card-header">
+      已撰寫 <span class="text-success"> {{commentNum}} </span> 則評論，評論過 <span class="text-success">
+        {{commentRestaurantNum}} </span> 間餐廳
+    </div>
+
+    {{#each profile.Comments}}
+    <div class="card">
+      <div class="row no-gutters">
+        <div class="col-md-3">
+          <div>
+            <img src="{{this.Restaurant.imageUrl}}" class="card-img" alt="餐廳圖片" style="width:250px;height:150px">
+          </div>
+        </div>
+        <div class="col-md-9">
+          <div class="card-body">
+            <h5 class="card-title mb-5">{{this.text}}</h5>
+            <p class="card-text">
+              <a href="/restaurants/{{this.Restaurant.id}}">
+                {{this.Restaurant.name}} 餐廳 </a> <small class="text-muted"> － {{moment this.createdAt}}</small>
+
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    {{/each}}
+
+  </div>
