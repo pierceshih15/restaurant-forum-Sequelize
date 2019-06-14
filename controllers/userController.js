@@ -47,7 +47,7 @@ const userController = {
     res.redirect('/signin');
   },
   // 顯示使用者清單
-  editUser: (req, res) => {
+  editUsers: (req, res) => {
     User.findAll().then(users => {
       return res.render('admin/users', {
         users: users,
@@ -55,7 +55,7 @@ const userController = {
     })
   },
   // 更新使用者權限
-  putUser: (req, res) => {
+  putUsers: (req, res) => {
     return User.findByPk(req.params.id)
       .then(user => {
         const {

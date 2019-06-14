@@ -42,10 +42,10 @@ module.exports = (app, passport) => {
   // 後台頁面
   app.get('/admin', authenticatedAdmin, (req, res) => res.redirect('/admin/restaurants'));
   app.get('/admin/restaurants', authenticatedAdmin, adminController.getRestaurants);
-  app.get('/admin/users', authenticatedAdmin, userController.editUser);
+  app.get('/admin/users', authenticatedAdmin, userController.editUsers);
 
   // 管理員權限設定
-  app.put('/admin/users/:id', authenticatedAdmin, userController.putUser);
+  app.put('/admin/users/:id', authenticatedAdmin, userController.putUsers);
 
   // 管理分類頁面
   app.get('/admin/categories', authenticatedAdmin, categoryController.getCategories);
