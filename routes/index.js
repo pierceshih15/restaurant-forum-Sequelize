@@ -88,4 +88,11 @@ module.exports = (app, passport) => {
 
   // 使用者登出
   app.get('/logout', userController.logout);
+
+  // 瀏覽使用者個人資料頁面
+  app.get('/users/:id', authenticated, userController.getUser);
+  // 編輯使用者個人資料頁面
+  app.get('/users/:id/edit', authenticated, userController.editUser);
+  // 更新使用者個人資料頁面
+  app.put('/users/:id', authenticated, upload.single('image'), userController.putUser);
 };

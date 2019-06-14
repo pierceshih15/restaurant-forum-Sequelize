@@ -1,0 +1,27 @@
+<div class="container mt-4 p-3">
+  <div class="border border-secondary bg-white p-3">
+    <div class="row">
+      <div class="col-auto">
+        <div class="border rounded">
+          {{#if profile.image}}
+          <img src="{{profile.image}}" alt="" style="width:300px;height:300px">
+          {{else}}
+          <img src="https://img.icons8.com/ios/100/000000/guest-male-filled.png" alt=""
+            style="width:300px;height:300px">
+          {{/if}}
+        </div>
+      </div>
+      <div class="col-auto">
+        <h4 class="py-2">{{profile.name}}</h4>
+
+        <p class="py-1">{{profile.email}}</p>
+
+        {{#ifCond profile.id user.id}}
+        <a href="/users/{{profile.id}}/edit">
+          <button class="btn btn-primary">edit</button>
+          {{/ifCond}}
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
