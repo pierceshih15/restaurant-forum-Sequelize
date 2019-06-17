@@ -76,9 +76,13 @@ const restController = {
         }]
       })
       .then(restaurant => {
-        return res.render('restaurant', {
-          restaurant: restaurant
-        });
+        restaurant.increment('viewCounts', {
+          by: 1
+        }).then(restaurant => {
+          return res.render('restaurant', {
+            restaurant: restaurant
+          });
+        })
       })
   },
   // 瀏覽單一餐廳的 Dashboard
