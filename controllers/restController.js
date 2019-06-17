@@ -81,6 +81,20 @@ const restController = {
         });
       })
   },
+  // 瀏覽單一餐廳的 Dashboard
+  getDashboard: (req, res) => {
+    Restaurant.findByPk(req.params.id, {
+        include: [Category, {
+          model: Comment,
+          include: [User]
+        }]
+      })
+      .then(restaurant => {
+        return res.render('dashboard', {
+          restaurant: restaurant
+        });
+      })
+  },
   // 取得最新的動態內容
   getFeeds: (req, res) => {
     return Restaurant.findAll({

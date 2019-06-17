@@ -31,9 +31,12 @@ module.exports = (app, passport) => {
   // 前台頁面
   app.get('/', authenticated, (req, res) => res.redirect('/restaurants'));
   app.get('/restaurants', authenticated, restController.getRestaurants);
+  // 瀏覽最新動態
   app.get('/restaurants/feeds', authenticated, restController.getFeeds);
   // 瀏覽單一間餐廳資料
   app.get('/restaurants/:id', authenticated, restController.getRestaurant);
+  // 瀏覽單一間餐廳的 Dashboard
+  app.get('/restaurants/:id/dashboard', authenticated, restController.getDashboard);
 
   // 使用者新增餐廳評論
   app.post('/comments', authenticated, commentController.postComment);
