@@ -81,6 +81,31 @@ const restController = {
         });
       })
   },
+  // 取得最新的動態內容
+  getFeeds: (req, res) => {
+    return Restaurant.findAll({
+        limit: 10,
+        order: [
+          ['createdAt', 'DESC']
+        ],
+        include: [Category],
+      })
+      .then(restaurants => {
+        Comment.findAll({
+            limit: 10,
+            order: [
+              ['createdAt', 'DESC']
+            ],
+            include: [User, Restaurant],
+          })
+          .then(comments => {
+            return res.render('feeds', {
+              restaurants: restaurants,
+              comments: comments,
+            })
+          })
+      })
+  },
 }
 
 module.exports = restController;
