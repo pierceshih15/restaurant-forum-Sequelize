@@ -24,7 +24,7 @@ const restController = {
 
     if (req.query.categoryId) {
       categoryId = Number(req.query.categoryId)
-      whereQuery['categoryId'] = categoryId
+      whereQuery['CategoryId'] = categoryId
     }
     // 透過 findAndCountAll 語法找出相對應的餐廳資料，以 result 呈現內容
     Restaurant.findAndCountAll({
