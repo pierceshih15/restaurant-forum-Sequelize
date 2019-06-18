@@ -51,7 +51,9 @@ const restController = {
           // 展開餐廳資料
           ...r.dataValues,
           // 複寫 description 內容
-          description: r.dataValues.description.substring(0, 50)
+          description: r.dataValues.description.substring(0, 50),
+          // 判斷該餐廳是否有被使用者收藏，若有則為 true，反之則為 false
+          isFavorited: req.user.FavoritedRestaurants.map(d => d.id).includes(r.id)
         }))
         Category.findAll().then(categories => {
           return res.render('restaurants', {
