@@ -3,6 +3,7 @@ const db = require('../models');
 const User = db.User;
 const Restaurant = db.Restaurant;
 const Comment = db.Comment;
+const Favorite = db.Favorite;
 const imgur = require('imgur-node-api');
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID;
 
@@ -147,6 +148,31 @@ const userController = {
           })
       })
     }
+  },
+  // 新增餐廳至我的最愛
+  addFavorite: (req, res) => {
+    return Favorite.create({
+        UserId: req.user.id,
+        RestaurantId: req.params.restaurantId
+      })
+      .then(restaurant => {
+        return res.redirect('back');
+      })
+  },
+  // 從我的最愛移除餐廳
+  removeFavorite: (req, res) => {
+    return Favorite.findOne({
+        where: {
+          UserId: req.user.id,
+          RestaurantId: req.params.restaurantId
+        }
+      })
+      .then(favorite => {
+        favorite.destroy()
+          .then(restaurant => {
+            return res.redirect('back');
+          })
+      })
   },
 }
 

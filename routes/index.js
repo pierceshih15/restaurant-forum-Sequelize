@@ -99,4 +99,9 @@ module.exports = (app, passport) => {
   app.get('/users/:id/edit', authenticated, userController.editUser);
   // 更新使用者個人資料頁面
   app.put('/users/:id', authenticated, upload.single('image'), userController.putUser);
+
+  // 使用者新增餐廳至我的最愛
+  app.post('/favorite/:restaurantId', authenticated, userController.addFavorite);
+  // 使用者從我的最愛移除餐廳
+  app.delete('/favorite/:restaurantId', authenticated, userController.removeFavorite);
 };
