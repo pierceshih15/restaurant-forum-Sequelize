@@ -53,7 +53,8 @@ const restController = {
           // 複寫 description 內容
           description: r.dataValues.description.substring(0, 50),
           // 判斷該餐廳是否有被使用者收藏，若有則為 true，反之則為 false
-          isFavorited: req.user.FavoritedRestaurants.map(d => d.id).includes(r.id)
+          isFavorited: req.user.FavoritedRestaurants.map(d => d.id).includes(r.id),
+          isLike: req.user.LikeRestaurants.map(d => d.id).includes(r.id),
         }))
         Category.findAll().then(categories => {
           return res.render('restaurants', {
@@ -76,18 +77,23 @@ const restController = {
           model: User,
           as: 'FavoritedUsers'
         }, {
+          model: User,
+          as: 'LikeUsers'
+        }, {
           model: Comment,
           include: [User]
         }]
       })
       .then(restaurant => {
         const isFavorited = restaurant.FavoritedUsers.map(d => d.id).includes(req.user.id)
+        const isLike = restaurant.LikeUsers.map(d => d.id).includes(req.user.id)
         restaurant.increment('viewCounts', {
           by: 1
         }).then(restaurant => {
           return res.render('restaurant', {
             restaurant: restaurant,
-            isFavorited: isFavorited
+            isFavorited: isFavorited,
+            isLike: isLike
           });
         })
       })

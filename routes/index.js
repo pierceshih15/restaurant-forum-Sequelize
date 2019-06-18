@@ -104,4 +104,9 @@ module.exports = (app, passport) => {
   app.post('/favorite/:restaurantId', authenticated, userController.addFavorite);
   // 使用者從我的最愛移除餐廳
   app.delete('/favorite/:restaurantId', authenticated, userController.removeFavorite);
+
+  // 使用者為餐廳點讚
+  app.post('/like/:restaurantId', authenticated, userController.likeRestaurant);
+  // 使用者從餐廳移除讚
+  app.delete('/like/:restaurantId', authenticated, userController.unlikeRestaurant);
 };

@@ -4,6 +4,7 @@ const User = db.User;
 const Restaurant = db.Restaurant;
 const Comment = db.Comment;
 const Favorite = db.Favorite;
+const Like = db.Like;
 const imgur = require('imgur-node-api');
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID;
 
@@ -169,6 +170,31 @@ const userController = {
       })
       .then(favorite => {
         favorite.destroy()
+          .then(restaurant => {
+            return res.redirect('back');
+          })
+      })
+  },
+  // 為餐廳點個讚
+  likeRestaurant: (req, res) => {
+    return Like.create({
+        UserId: req.user.id,
+        RestaurantId: req.params.restaurantId
+      })
+      .then(restaurant => {
+        return res.redirect('back');
+      })
+  },
+  // 為餐廳移除讚
+  unlikeRestaurant: (req, res) => {
+    return Like.findOne({
+        where: {
+          UserId: req.user.id,
+          RestaurantId: req.params.restaurantId
+        }
+      })
+      .then(like => {
+        like.destroy()
           .then(restaurant => {
             return res.redirect('back');
           })
