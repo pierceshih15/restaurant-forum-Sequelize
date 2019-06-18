@@ -33,6 +33,9 @@ module.exports = (app, passport) => {
   app.get('/restaurants', authenticated, restController.getRestaurants);
   // 瀏覽最新動態
   app.get('/restaurants/feeds', authenticated, restController.getFeeds);
+  // 瀏覽美食達人的頁面
+  app.get('/users/top', authenticated, userController.getTopUser);
+
   // 瀏覽單一間餐廳資料
   app.get('/restaurants/:id', authenticated, restController.getRestaurant);
   // 瀏覽單一間餐廳的 Dashboard
