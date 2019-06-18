@@ -5,11 +5,16 @@ module.exports = (sequelize, DataTypes) => {
     email: DataTypes.STRING,
     password: DataTypes.STRING,
     isAdmin: DataTypes.BOOLEAN,
-    image:DataTypes.STRING
+    image: DataTypes.STRING
   }, {});
   User.associate = function (models) {
     // associations can be defined here
     User.hasMany(models.Comment);
+    User.belongsToMany(models.Restaurant, {
+      through: models.Favorite,
+      foreignKey: 'UserId',
+      as: 'FavoriteRestaurantS',
+    })
   };
   return User;
 };
