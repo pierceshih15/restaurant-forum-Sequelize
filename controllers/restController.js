@@ -3,6 +3,7 @@ const Restaurant = db.Restaurant;
 const Category = db.Category;
 const User = db.User;
 const Comment = db.Comment;
+const Favorite = db.Favorite;
 
 const pageLimit = 10;
 
@@ -135,6 +136,30 @@ const restController = {
               comments: comments,
             })
           })
+      })
+  },
+  getTopRestaurant: (req, res) => {
+    return Restaurant.findAll({
+        include: [{
+          model: User,
+          as: 'FavoritedUsers'
+        }]
+      })
+      .then(restaurants => {
+        restaurants = restaurants.map(restaurant => ({
+          ...restaurant.dataValues,
+          FavoriteCount: restaurant.FavoritedUsers.length,
+          isFavorited: restaurant.FavoritedUsers.map(d => d.id).includes(req.user.id)
+        }))
+        // 排除收藏數為 0 的餐廳
+        restaurants = restaurants.filter(item => item.FavoriteCount > 0);
+        // 依照追蹤者人數排序（多 -> 少）
+        restaurants = restaurants.sort((a, b) => b.FavoriteCount - a.FavoriteCount);
+        // 取出前 10 筆資料
+        restaurants = restaurants.slice(0, 10);
+        return res.render('topRestaurant', {
+          restaurants: restaurants
+        })
       })
   },
 }
