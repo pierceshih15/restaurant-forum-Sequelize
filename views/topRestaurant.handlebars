@@ -40,10 +40,17 @@
             </a>
             {{#if isFavorited }}
             <form action="/favorite/{{this.id}}?_method=DELETE" method="POST" style="display: contents;"
-              class="d-inline-block"><button type="submit" class="btn btn-danger">移除最愛</button></form>
+              class="d-inline-block">
+              <button type="submit" class="btn btn-danger">
+                移除最愛
+              </button>
+            </form>
             {{else}}
             <form action="/favorite/{{this.id}}" method="POST" style="display: contents;" class="d-inline-block">
-              <button type="submit" class="btn btn-primary">加到最愛</button></form>
+              <button type="submit" class="btn btn-primary">
+                加到最愛
+              </button>
+            </form>
             {{/if}}
           </div>
         </div>

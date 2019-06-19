@@ -20,20 +20,31 @@
     </a>
     {{#if isFavorited }}
     <form action="/favorite/{{restaurant.id}}?_method=DELETE" method="POST" style="display: contents;"
-      class="d-inline-block"><button type="submit" class="btn btn-danger">移除最愛</button></form>
+      class="d-inline-block">
+      <button type="submit" class="btn btn-danger">
+        移除最愛
+      </button>
+    </form>
     {{else}}
     <form action="/favorite/{{restaurant.id}}" method="POST" style="display: contents;" class="d-inline-block">
-      <button type="submit" class="btn btn-primary">加到最愛</button></form>
-    {{/if}}
-    {{#if this.isLike }}
-    <form action="/like/{{restaurant.id}}?_method=DELETE" method="POST" class="d-inline-block"><button type="submit"
-        class="btn btn-danger">Unlike</button></form>
-    {{else}}
-    <form action="/like/{{restaurant.id}}" method="POST" class="d-inline-block"><button type="submit"
-        class="btn btn-primary">Like</button>
+      <button type="submit" class="btn btn-primary">
+        加到最愛
+      </button>
     </form>
     {{/if}}
-
+    {{#if this.isLike }}
+    <form action="/like/{{restaurant.id}}?_method=DELETE" method="POST" class="d-inline-block">
+      <button type="submit" class="btn btn-danger">
+        Unlike
+      </button>
+    </form>
+    {{else}}
+    <form action="/like/{{restaurant.id}}" method="POST" class="d-inline-block">
+      <button type="submit" class="btn btn-primary">
+        Like
+      </button>
+    </form>
+    {{/if}}
   </div>
   <hr>
 </div>
@@ -43,7 +54,9 @@
 {{#each restaurant.Comments}}
 {{#if ../user.isAdmin}}
 <form action="/comments/{{this.id}}?_method=DELETE" method="POST" style="float:right;">
-  <button type="submit" class="btn btn-danger">Delete</button>
+  <button type="submit" class="btn btn-danger">
+    Delete
+  </button>
 </form>
 {{/if}}
 <blockquote class="blockquote mb-0">
