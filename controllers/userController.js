@@ -88,23 +88,68 @@ const userController = {
         }
       })
   },
+
   // 瀏覽使用者個人頁面
   getUser: (req, res) => {
     User.findByPk(req.params.id, {
-        include: {
-          model: Comment,
-          include: Restaurant
-        }
+        include: [{
+            model: Comment,
+            include: Restaurant
+          }, {
+            model: Restaurant,
+            as: 'FavoritedRestaurants'
+          },
+          {
+            model: User,
+            as: 'Followers'
+          },
+          {
+            model: User,
+            as: 'Followings'
+          },
+        ]
       })
       .then(user => {
+        // 取得使用者頁面的追蹤狀態
+        const isFollowed = req.user.Followings.map(d => d.id).includes(user.id)
+
+        // 取得使用者頁面的相關數字
         const commentNum = user.Comments.length;
         const commentRestaurantArray = user.Comments.map(comment => comment.Restaurant.name);
         const commentRestaurantNum = commentRestaurantArray.filter(findUnique).length;
+        const followingsNum = user.Followings.length;
+        const followersNum = user.Followers.length;
+        const favoritedRestaurantsNum = user.FavoritedRestaurants.length;
+
+        // 取得收藏的餐廳
+        const favoritedRestaurantsData = user.FavoritedRestaurants;
+
+        // 篩選出評論中不重複的餐廳
+        const restaurantData = user.Comments.map(comment => comment.Restaurant);
+        // 透過 reduce 傳入 accumulator 和 currentValue 使用
+        const filteredRestaurant = restaurantData.reduce((accumulator, currentValue) => {
+          // 透過 find 比較 accumulator 和 currentValue 兩者 id 是否相同
+          const x = accumulator.find(item => item.id === currentValue.id);
+          // 若不相同，則 X 為 undefined，將 currentValue 以 concat 語法加入 accumulator
+          if (!x) {
+            return accumulator.concat([currentValue]);
+          } else {
+            // 反之，若 X 成立，則回傳 accumulator
+            return accumulator;
+          }
+        }, []);
+
         return res.render('users/profile', {
           // 傳入 profile 以供瀏覽器畫面更新，同時，不更動使用者的帳號
           profile: user,
           commentNum: commentNum,
           commentRestaurantNum: commentRestaurantNum,
+          favoritedRestaurantsNum: favoritedRestaurantsNum,
+          favoritedRestaurantsData: favoritedRestaurantsData,
+          followingsNum: followingsNum,
+          followersNum: followersNum,
+          isFollowed: isFollowed,
+          filteredRestaurant: filteredRestaurant,
         });
       })
   },
