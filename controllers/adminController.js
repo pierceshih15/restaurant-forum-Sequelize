@@ -5,16 +5,15 @@ const Category = db.Category;
 const imgur = require('imgur-node-api');
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID;
 
+// 引入 adminService 資料
+const adminService = require('../services/adminService.js')
+
 // 宣告 adminController 物件變數，管理不同物件屬性（函式）
 const adminController = {
   // 取得所有餐廳的資料
   getRestaurants: (req, res) => {
-    return Restaurant.findAll({
-      include: [Category]
-    }).then(restaurants => {
-      return res.render('admin/restaurants', {
-        restaurants: restaurants,
-      });
+    adminService.getRestaurants(req, res, (data) => {
+      return res.render('admin/restaurants', data)
     })
   },
   // 建立新餐廳的頁面
