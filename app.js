@@ -48,4 +48,4 @@ app.listen(process.env.PORT || port, () => {
   console.log(`The restaurantForum app listening on port ${port}!`);
 })
 
-require('./routes')(app, passport);
+require('./routes')(app);
