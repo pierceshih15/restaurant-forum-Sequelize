@@ -1,24 +1,15 @@
 const db = require('../models');
 const Category = db.Category;
 
+const categoryService = require('../services/categoryService.js')
+
 const categoryController = {
   // 瀏覽所有分類
   getCategories: (req, res) => {
-    return Category.findAll().then(categories => {
-      // 若網址上有分類 id，代表取出特定分類，再行傳入使用，反之，只需要傳入全數的分類即可
-      if (req.params.id) {
-        Category.findByPk(req.params.id)
-          .then(category => {
-            return res.render('admin/categories', {
-              categories: categories,
-              category: category,
-            });
-          })
-      } else {
-        return res.render('admin/categories', {
-          categories: categories,
-        });
-      }
+    categoryService.getCategories(req, res, data => {
+      return res.render('admin/restaurants', {
+        data
+      })
     })
   },
   // 建立新分類的動作
