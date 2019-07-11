@@ -13,6 +13,18 @@ const adminService = {
       });
     })
   },
+
+  // 取得單一餐廳的資料
+  getRestaurant: (req, res, callback) => {
+    return Restaurant.findByPk(req.params.id, {
+        include: [Category]
+      })
+      .then(restaurant => {
+        callback({
+          restaurant: restaurant,
+        });
+      })
+  },
 }
 
 module.exports = adminService;
