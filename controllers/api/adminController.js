@@ -19,6 +19,16 @@ const adminController = {
       return res.json(data);
     })
   },
+
+  // 刪除單一餐廳的資料
+  deleteRestaurant: (req, res, callback) => {
+    adminService.deleteRestaurant(req, res, (data) => {
+      return res.json({
+        status: 'success',
+        message: ''
+      });
+    })
+  }
 }
 
 module.exports = adminController;
