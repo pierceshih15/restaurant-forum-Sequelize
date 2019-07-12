@@ -17,5 +17,7 @@ router.put('/admin/restaurants/:id', upload.single('image'), adminController.put
 
 router.get('/admin/categories', categoryController.getCategories);
 router.get('/admin/categories/:id', categoryController.getCategories);
+// 新增分類
+router.post('/admin/categories', categoryController.postCategory);
 
 module.exports = router;

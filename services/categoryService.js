@@ -21,6 +21,32 @@ const categoryService = {
       }
     })
   },
+
+  // 建立新分類的動作
+  postCategory: (req, res, callback) => {
+    if (!req.body.name) {
+      return callback({
+        status: 'error',
+        message: "分類名稱尚未填寫"
+      })
+    } else {
+      return Category.create({
+          name: req.body.name,
+        })
+        .then(category => {
+          callback({
+            status: 'success',
+            message: `分類 ${category.name} 新增成功`
+          });
+        })
+        .catch(function (err) {
+          callback({
+            status: 'error',
+            message: '分類新增失敗'
+          });
+        })
+    }
+  },
 }
 
 module.exports = categoryService;

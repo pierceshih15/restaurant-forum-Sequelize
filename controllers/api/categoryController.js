@@ -10,7 +10,14 @@ const categoryController = {
   getCategories: (req, res) => {
     categoryService.getCategories(req, res, (data) => {
       return res.json(data);
-    })
+    });
+  },
+
+  // 建立新分類的動作
+  postCategory: (req, res) => {
+    categoryService.postCategory(req, res, data => {
+      return res.json(data);
+    });
   },
 }
 
