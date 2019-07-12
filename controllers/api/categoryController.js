@@ -19,6 +19,13 @@ const categoryController = {
       return res.json(data);
     });
   },
+
+  // 修改分類
+  putCategory: (req, res) => {
+    categoryService.putCategory(req, res, data => {
+      return res.json(data);
+    });
+  },
 }
 
 module.exports = categoryController;

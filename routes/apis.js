@@ -19,5 +19,7 @@ router.get('/admin/categories', categoryController.getCategories);
 router.get('/admin/categories/:id', categoryController.getCategories);
 // 新增分類
 router.post('/admin/categories', categoryController.postCategory);
+// 編輯分類
+router.put('/admin/categories/:id', categoryController.putCategory);
 
 module.exports = router;

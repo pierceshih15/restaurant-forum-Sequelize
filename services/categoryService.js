@@ -47,6 +47,27 @@ const categoryService = {
         })
     }
   },
+
+  // 修改分類
+  putCategory: (req, res, callback) => {
+    if (!req.body.name) {
+      callback({
+        status: 'error',
+        message: '分類名稱尚未填寫'
+      })
+    } else {
+      return Category.findByPk(req.params.id)
+        .then(category => {
+          category.update(req.body)
+            .then(category => {
+              callback({
+                status: 'success',
+                message: `分類 ${category.name} 更新成功`
+              });
+            })
+        })
+    }
+  },
 }
 
 module.exports = categoryService;
