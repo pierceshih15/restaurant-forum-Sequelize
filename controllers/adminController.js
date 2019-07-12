@@ -28,10 +28,10 @@ const adminController = {
   postRestaurant: (req, res) => {
     adminService.postRestaurant(res, res, data => {
       if (data['status'] === 'error') {
-        req.flash('error_messages', "餐廳名稱尚未填寫")
+        req.flash('error_messages', data['message'])
         return res.redirect('back')
       }
-      req.flash('success_messages', '餐廳已新增')
+      req.flash('success_messages', data['message'])
       res.redirect('/admin/restaurants')
     })
   },
