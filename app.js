@@ -22,6 +22,7 @@ app.set('view engine', 'handlebars') // 設定使用 Handlebars 做為樣板引�
 app.use(bodyParser.urlencoded({
   extended: true
 }));
+app.use(bodyParser.json());
 app.use(methodOverride('_method'));
 app.use('/upload', express.static(__dirname + '/upload'));
 

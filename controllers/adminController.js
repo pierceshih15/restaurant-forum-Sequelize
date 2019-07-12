@@ -26,46 +26,14 @@ const adminController = {
   },
   // 建立新餐廳的動作
   postRestaurant: (req, res) => {
-    if (!req.body.name) {
-      req.flash('error_messages', "餐廳名稱尚未填寫")
-      return res.redirect('back')
-    }
-
-    const {
-      file
-    } = req
-    if (file) {
-      imgur.setClientID(IMGUR_CLIENT_ID);
-      imgur.upload(file.path, (err, img) => {
-        return Restaurant.create({
-            name: req.body.name,
-            tel: req.body.tel,
-            address: req.body.address,
-            opening_hours: req.body.opening_hours,
-            description: req.body.description,
-            image: file ? img.data.link : null,
-            Category: req.body.categoryId
-          })
-          .then((restaurant) => {
-            req.flash('success_messages', '餐廳已新增')
-            return res.redirect('/admin/restaurants')
-          })
-      })
-    } else {
-      return Restaurant.create({
-          name: req.body.name,
-          tel: req.body.tel,
-          address: req.body.address,
-          opening_hours: req.body.opening_hours,
-          description: req.body.description,
-          image: null,
-          Category: req.body.categoryId
-        })
-        .then((restaurant) => {
-          req.flash('success_messages', '餐廳已新增')
-          return res.redirect('/admin/restaurants')
-        })
-    }
+    adminService.postRestaurant(res, res, data => {
+      if (data['status'] === 'error') {
+        req.flash('error_messages', "餐廳名稱尚未填寫")
+        return res.redirect('back')
+      }
+      req.flash('success_messages', '餐廳已新增')
+      res.redirect('/admin/restaurants')
+    })
   },
   // 取得單一餐廳的資料
   getRestaurant: (req, res) => {
