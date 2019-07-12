@@ -26,6 +26,13 @@ const categoryController = {
       return res.json(data);
     });
   },
+
+  // 刪除分類
+  deleteCategory: (req, res) => {
+    categoryService.deleteCategory(req, res, data => {
+      return res.json(data);
+    });
+  },
 }
 
 module.exports = categoryController;

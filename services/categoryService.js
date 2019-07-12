@@ -68,6 +68,27 @@ const categoryService = {
         })
     }
   },
+
+  // 刪除分類
+  deleteCategory: (req, res, callback) => {
+    return Category.findByPk(req.params.id)
+      .then(category => {
+        if (!category) {
+          callback({
+            status: 'error',
+            message: '刪除分類名稱不存在!'
+          });
+        } else {
+          category.destroy()
+            .then(category => {
+              callback({
+                status: 'success',
+                message: `${category.name} 已成功刪除`
+              })
+            })
+        }
+      })
+  }
 }
 
 module.exports = categoryService;
