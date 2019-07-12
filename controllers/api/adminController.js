@@ -19,6 +19,30 @@ const adminController = {
       return res.json(data);
     })
   },
+
+  // 建立新餐廳的動作
+  postRestaurant: (req, res) => {
+    adminService.postRestaurant(req, res, data => {
+      return res.json(data);
+    })
+  },
+
+  // 編輯單一餐廳的資料
+  putRestaurant: (req, res) => {
+    adminService.putRestaurant(req, res, data => {
+      return res.json(data);
+    })
+  },
+
+  // 刪除單一餐廳的資料
+  deleteRestaurant: (req, res, callback) => {
+    adminService.deleteRestaurant(req, res, (data) => {
+      return res.json({
+        status: 'success',
+        message: ''
+      });
+    })
+  }
 }
 
 module.exports = adminController;
