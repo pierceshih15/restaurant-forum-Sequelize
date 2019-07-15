@@ -55,3 +55,44 @@ passport.deserializeUser((id, cb) => {
 })
 
 module.exports = passport;
+
+// JWT
+const jwt = require('jsonwebtoken')
+const passportJWT = require('passport-jwt')
+const ExtractJwt = passportJWT.ExtractJwt
+const JwtStrategy = passportJWT.Strategy
+
+require('dotenv').config();
+let jwtOptions = {}
+// 設定去哪裡找 token
+jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken()
+// 使用密鑰來檢查 token 是否經過纂改
+jwtOptions.secretOrKey = process.env.JWT_SECRET;
+
+let strategy = new JwtStrategy(jwtOptions, function (jwt_payload, next) {
+  User.findByPk(jwt_payload.id, {
+    include: [{
+        model: db.Restaurant,
+        as: 'FavoritedRestaurants',
+      },
+      {
+        model: db.Restaurant,
+        as: 'LikedRestaurants'
+      },
+      {
+        model: User,
+        as: 'Followers'
+      },
+      {
+        model: User,
+        as: 'Followings'
+      }
+    ]
+  }).then(user => {
+    console.log(user);
+    if (!user) return next(null, false);
+    return next(null, user);
+  })
+})
+
+passport.use(strategy)
