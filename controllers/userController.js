@@ -38,40 +38,21 @@ const userController = {
   },
   // 顯示使用者清單
   editUsers: (req, res) => {
-    User.findAll().then(users => {
+    userService.editUsers(req, res, data => {
       return res.render('admin/users', {
-        users: users,
+        data
       });
     })
   },
   // 更新使用者權限
   putUsers: (req, res) => {
-    return User.findByPk(req.params.id)
-      .then(user => {
-        const {
-          isAdmin
-        } = user;
-
-        if (isAdmin) {
-          user.update({
-              isAdmin: 0
-            })
-            .then(user => {
-              req.flash('success_messages', '帳號已設定為一般用戶！');
-              return res.redirect('/admin/users');
-            })
-        } else {
-          user.update({
-              isAdmin: 1
-            })
-            .then(user => {
-              req.flash('success_messages', '帳號已設定為管理員！');
-              return res.redirect('/admin/users');
-            })
-        }
-      })
+    userService.putUsers(req, res, data => {
+      if (data['status'] === 'success') {
+        req.flash('success_messages', data['message']);
+        return res.redirect('/admin/users');
+      }
+    })
   },
-
   // 瀏覽使用者個人頁面
   getUser: (req, res) => {
     User.findByPk(req.params.id, {

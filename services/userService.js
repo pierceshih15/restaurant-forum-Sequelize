@@ -1,7 +1,6 @@
 const db = require('../models');
 const User = db.User;
 
-
 const userService = {
   // 註冊
   signUp: (req, res) => {
@@ -31,7 +30,52 @@ const userService = {
           }
         })
     }
-  }
+  },
+
+  // 顯示使用者清單
+  editUsers: (req, res, callback) => {
+    User.findAll().then(users => {
+      callback({
+        users: users
+      });
+    })
+  },
+
+  // 更新使用者權限
+  putUsers: (req, res, callback) => {
+    return User.findByPk(req.params.id)
+      .then(user => {
+        const {
+          isAdmin
+        } = user;
+
+        if (isAdmin) {
+          user.update({
+              isAdmin: 0
+            })
+            .then(user => {
+              callback({
+                status: 'success',
+                message: '帳號已設定為一般用戶！'
+              })
+              // req.flash('success_messages', '帳號已設定為一般用戶！');
+              // return res.redirect('/admin/users');
+            })
+        } else {
+          user.update({
+              isAdmin: 1
+            })
+            .then(user => {
+              callback({
+                status: 'success',
+                message: '帳號已設定為管理員！'
+              })
+              // req.flash('success_messages', '帳號已設定為管理員！');
+              // return res.redirect('/admin/users');
+            })
+        }
+      })
+  },
 }
 
 module.exports = userService;

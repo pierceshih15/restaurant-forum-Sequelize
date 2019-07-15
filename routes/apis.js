@@ -76,8 +76,10 @@ router.delete('/admin/restaurants/:id', authenticated, authenticatedAdmin, admin
 // 2-2 後台功能（使用者） //
 
 // 2-2-1. 後台頁面 - 瀏覽所有使用者資料
+router.get('/admin/users', authenticatedAdmin, userController.editUsers);
 
 // 2-2-2. 後台頁面 - 管理員權限設定
+router.put('/admin/users/:id', authenticatedAdmin, userController.putUsers);
 
 // 2-3. 後台功能（分類） //
 

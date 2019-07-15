@@ -81,6 +81,18 @@ let userController = {
         })
       })
   },
+  // 顯示使用者清單
+  editUsers: (req, res) => {
+    userService.editUsers(req, res, data => {
+      return res.json(data);
+    })
+  },
+  // 更新使用者權限
+  putUsers: (req, res) => {
+    userService.putUsers(req, res, data => {
+      return res.json(data);
+    })
+  },
 }
 
 module.exports = userController;
