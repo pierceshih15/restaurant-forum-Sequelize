@@ -35,11 +35,13 @@ const authenticatedAdmin = (req, res, next) => {
 // ------------------------帳號功能-------------------------------- // 
 
 // 1-1. 使用者註冊頁面
+router.get('/signup', userController.signUpPage);
 
 // 1-2. 使用者註冊動作
 router.post('/signup', userController.signUp);
 
 // 1-3. 使用者登入頁面
+router.get('/signin', userController.signUpPage);
 
 // 1-4. 使用者登入動作
 router.post('/signin', userController.signIn);

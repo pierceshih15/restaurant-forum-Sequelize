@@ -10,6 +10,24 @@ const ExtractJwt = passportJWT.ExtractJwt;
 const JwtStrategy = passportJWT.Strategy;
 
 let userController = {
+  // 註冊頁面
+  signUpPage: (req, res) => {
+    return res.json();
+  },
+
+  // 註冊功能
+  signUp: (req, res) => {
+    userService.signUp(req, res, data => {
+      return res.json(data);
+    })
+  },
+
+  // 登入頁面
+  signInPage: (req, res) => {
+    return res.json();
+  },
+
+  // 登入功能
   signIn: (req, res) => {
     // 1. 檢查必要資料
     if (!req.body.email || !req.body.password) {
@@ -63,13 +81,6 @@ let userController = {
         })
       })
   },
-
-  // 註冊功能
-  signUp: (req, res) => {
-    userService.signUp(req, res, data => {
-      return res.json(data);
-    })
-  }
 }
 
 module.exports = userController;
