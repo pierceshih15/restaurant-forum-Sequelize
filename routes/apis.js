@@ -34,6 +34,8 @@ const authenticatedAdmin = (req, res, next) => {
 
 // 登入
 router.post('/signin', userController.signIn);
+// 註冊
+router.post('/signup', userController.signUp);
 
 router.get('/admin/restaurants', authenticated, authenticatedAdmin, adminController.getRestaurants);
 router.get('/admin/restaurants/:id', authenticated, authenticatedAdmin, adminController.getRestaurant);
