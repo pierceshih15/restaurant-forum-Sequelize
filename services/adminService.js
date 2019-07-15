@@ -77,6 +77,17 @@ const adminService = {
         })
     }
   },
+  // 瀏覽單一餐廳的編輯頁面
+  editRestaurant: (req, res, callback) => {
+    Restaurant.findByPk(req.params.id).then(restaurant => {
+      Category.findAll().then(categories => {
+        callback({
+          restaurant,
+          categories
+        })
+      })
+    })
+  },
   // 編輯單一餐廳的資料
   putRestaurant: (req, res, callback) => {
     if (!req.body.name) {

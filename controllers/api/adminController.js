@@ -27,6 +27,13 @@ const adminController = {
     })
   },
 
+  // 瀏覽單一餐廳的編輯頁面
+  editRestaurant: (req, res) => {
+    adminService.editRestaurant(req, res, data => {
+      return res.json(data);
+    })
+  },
+
   // 編輯單一餐廳的資料
   putRestaurant: (req, res) => {
     adminService.putRestaurant(req, res, data => {

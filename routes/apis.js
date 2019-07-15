@@ -64,7 +64,8 @@ router.post('/admin/restaurants', authenticated, authenticatedAdmin, upload.sing
 // 2-1-5. 後台頁面 - 瀏覽單一間餐廳資料
 router.get('/admin/restaurants/:id', authenticated, authenticatedAdmin, adminController.getRestaurant);
 
-// 2-1-6. 後台頁面 - 編輯單一間餐廳資料
+// 2-1-6. 後台頁面 - 瀏覽單一間餐廳的編輯頁面
+router.get('/admin/restaurants/:id/edit', authenticatedAdmin, adminController.editRestaurant);
 
 // 2-1-7. 後台頁面 - 更新單一間餐廳資料
 router.put('/admin/restaurants/:id', authenticated, authenticatedAdmin, upload.single('image'), adminController.putRestaurant);

@@ -41,16 +41,11 @@ const adminController = {
       return res.render('admin/restaurant', data)
     })
   },
-  // 編輯單一餐廳的資料
+  // 瀏覽單一餐廳的編輯頁面
   editRestaurant: (req, res) => {
-    return Restaurant.findByPk(req.params.id).then(restaurant => {
-      Category.findAll().then(categories => {
-        return res.render('admin/create', {
-          restaurant: restaurant,
-          categories: categories,
-        });
-      })
-    })
+    adminService.editRestaurant(req, res, data => {
+      return res.render('admin/create', data);
+    });
   },
   // 編輯單一餐廳的資料
   putRestaurant: (req, res) => {
